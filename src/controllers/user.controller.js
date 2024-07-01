@@ -49,9 +49,15 @@ export const logIn = async (req, res) =>{
                 message: "Invalid credentials"
             });
         }
-
+         
         const token = jwt.sign({ email }, secretKey, { expiresIn: process.env.SECRET_KEY_EXPIRE });
         
+        res.cookie('token', token, {
+            httpOnly: true, 
+            secure: true, 
+            maxAge: 24 * 60 * 60 * 1000, 
+          });
+
         res.status(200).json({
             message: "User logged in successfully",
             "data": user,
