@@ -1,5 +1,7 @@
 import User from "../models/user.model.js";
 import becrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+process.loadEnvFile();
 
 export const signUp = async (req, res)=>{
     const {name, email, password, mobile, status} = req.body;
@@ -28,7 +30,10 @@ export const signUp = async (req, res)=>{
 }
 
 export const logIn = async (req, res) =>{
+
     const {email, password} = req.body;
+    const secretKey = process.env.SECREST_KEY; 
+          
     try{
         const user = await User.findOne({email});
         if(!user){
@@ -39,13 +44,18 @@ export const logIn = async (req, res) =>{
         
         const isMatch = await becrypt.compare(password, user.password);
         if(!isMatch){
+            
             return res.status(400).json({
                 message: "Invalid credentials"
             });
         }
+
+        const token = jwt.sign({ email }, secretKey, { expiresIn: process.env.SECRET_KEY_EXPIRE });
+        
         res.status(200).json({
             message: "User logged in successfully",
-            user
+            "data": user,
+            "token": token,
         });
     }
     catch(error){
