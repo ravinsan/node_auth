@@ -29,6 +29,7 @@ export const signUp = async (req, res)=>{
     }
 }
 
+// Login start
 export const logIn = async (req, res) =>{
 
     const {email, password} = req.body;
@@ -68,5 +69,15 @@ export const logIn = async (req, res) =>{
         res.status(500).json({
             message: error.message
         });
-    }
+    }    
 }
+// Login end
+
+// Logout start
+ export const logout = (req, res) =>{
+    res.clearCookie('token');
+    res.status(200).json({
+        message: "User logged out successfully"
+    });
+}
+// Logout end

@@ -12,5 +12,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api', Route);
 
+app.use((req, res) => {
+    res.status(404).json({ message: 'Route not found' });
+});
 
 export default app;
