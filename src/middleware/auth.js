@@ -3,7 +3,7 @@ process.loadEnvFile();
 const secretKey = process.env.SECREST_KEY; 
 
 const verifyToken = (req, res, next) => {
-  console.log(req);
+
  // const token = req.headers['authorization'];
   const token = req.cookies.token;
   //console.log("ff", req.cookies.token);
